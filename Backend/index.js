@@ -6,6 +6,7 @@ import dns from 'dns'
 import { clerkMiddleware } from '@clerk/express'
 import fs from 'fs'
 import path from 'path'
+import job from './configs/cron.js'
 
 dns.setServers([
     '1.1.1.1',
@@ -21,6 +22,9 @@ app.use(express.json());
 app.use(cors());
 app.use(clerkMiddleware())
 
+if(process.env.NODE_ENV === "production"){
+    job.start()
+}
 app.get('/health', (req, res) => res.send('Server is Running!!!'))
 
 if(fs.existsSync(publicDir)){
