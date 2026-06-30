@@ -8,6 +8,7 @@ import fs from 'fs'
 import path from 'path'
 import job from './configs/cron.js'
 import clerkWebHook from './webhooks/clerk.webhook.js'
+import authRoutes from './routes/auth.route.js'
 dns.setServers([
     '1.1.1.1',
     '8.8.8.8'
@@ -27,7 +28,7 @@ if(process.env.NODE_ENV === "production"){
     job.start()
 }
 app.get('/health', (req, res) => res.send('Server is Running!!!'))
-
+app.use('/api/auth', authRoutes)
 if(fs.existsSync(publicDir)){
     app.use(express.static(publicDir))
     app.get('/{*any}', (req, res, next) => {
