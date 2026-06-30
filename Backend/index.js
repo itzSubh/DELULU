@@ -3,6 +3,8 @@ import cors from 'cors'
 import 'dotenv/config'
 import connectDB from './configs/db.js'
 import dns from 'dns'
+import { clerkMiddleware } from '@clerk/express'
+
 
 dns.setServers([
     '1.1.1.1',
@@ -15,6 +17,7 @@ await connectDB();
 
 app.use(express.json());
 app.use(cors());
+app.use(clerkMiddleware())
 
 app.get('/', (req, res) => res.send('Server is Running!!!'))
 
