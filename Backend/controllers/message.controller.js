@@ -2,7 +2,7 @@ import { request } from "express";
 import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
 import { hasImageKitConfig, uploadChatMedia } from "../configs/imagekit.js";
-import { getReceiverSocketId } from "../configs/socket.js";
+import { io, getReceiverSocketId } from "../configs/socket.js";
 
 
 export async function getUsersForSidebar(req, res) {
