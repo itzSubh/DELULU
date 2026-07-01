@@ -10,19 +10,19 @@ import job from './configs/cron.js'
 import clerkWebHook from './webhooks/clerk.webhook.js'
 import authRoutes from './routes/auth.route.js'
 import messageRoutes from './routes/message.route.js'
+import { app, server } from './configs/socket.js'
 dns.setServers([
     '1.1.1.1',
     '8.8.8.8'
 ])
 
-const app = express();
 const publicDir = path.join(process.cwd(),"public");
 
 await connectDB();
 
 app.use('/api/webhooks/clerk', express.raw({ type: 'application/json'}), clerkWebHook)
 app.use(express.json());
-app.use(cors());
+app.use(cors({origin: process.env.FRONTEND_URL || "http://localhost:5173"}));
 app.use(clerkMiddleware())
 
 if(process.env.NODE_ENV === "production"){
@@ -41,4 +41,4 @@ if(fs.existsSync(publicDir)){
 }
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server is runnning on port ${PORT}`))
+server.listen(PORT, () => console.log(`Server is runnning on port ${PORT}`))
